@@ -1,0 +1,12 @@
+#executaveis
+*.exe
+
+#dlls
+*.dll
+
+#object files
+*.o
+*.obj
+
+#vscode files
+.vscode/
