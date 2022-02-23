@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -26,5 +27,7 @@ class Screen
         
         //transforma uma superficie em texture
         SDL_Texture* CreateTextureFromSurface(SDL_Surface * surface);
+        //retorna um rect do tamanho da surface
+        SDL_Rect getRectFromSurface(SDL_Surface *surf);
 };
 

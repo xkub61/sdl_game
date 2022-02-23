@@ -59,6 +59,24 @@ void Screen::getErrors(){
     cout<< erros << endl;
     return;
 }
+
+SDL_Rect Screen::getRectFromSurface(SDL_Surface *surf){
+    SDL_Rect rect;
+    if (surf == nullptr)
+    {
+        rect.x = 0;
+        rect.y = 0;
+        rect.w = 1;
+        rect.h = 1;
+    }
+    else{
+        rect.x = 0;
+        rect.y = 0;
+        rect.w = surf->w;
+        rect.h = surf -> h;
+    }
+    return rect;
+}
 void Screen::destroy(){
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);

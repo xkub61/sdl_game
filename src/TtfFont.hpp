@@ -1,8 +1,22 @@
+#pragma once
 #include<iostream>
 #include"SDL2/SDL.h"
 #include"SDL2/SDL_ttf.h"
 #include "Screen.hpp"
 using namespace std;
+
+/*
+-inicie o objeto            TtfFont()
+-verifique erros            getErrors()
+-sete a cor                 setFontColor()
+-sete a posição             setTextPosition()
+-sete a escala caso queira  setScale()
+-renderize o texto          renderText()
+-verifique erros            getErrors()
+-libere a textura           clear()
+-por fim, feche a fonte     close()
+
+*/
 
 class TtfFont
 {
@@ -16,7 +30,6 @@ private:
     string errors;
 public:
     TtfFont(const char* file_path, int ptsize, Screen *display_ptr);
-    TtfFont();
 
     void setFontColor(int r,int g,int b,int a);
     void setTextPosition(int x, int y);
