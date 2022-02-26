@@ -1,16 +1,14 @@
 #include <iostream>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
-#include "SDL2/SDL_ttf.h"
 #include "Screen.hpp"
-#include "TtfFont.hpp"
-#include "Entity.hpp"
 #include "Vector2d.hpp"
+#include "Level.hpp"
+
 
 using namespace std;
 
-#define WINDOW_HEIGHT 600
-#define WINDOW_WIDTH 800
+
 #define FPS 60
 
 int main(int argc,char *argv[])
@@ -25,37 +23,15 @@ int main(int argc,char *argv[])
         SDL_Quit();
         return 1;
     }
-    if(TTF_Init() == -1){
-        cout << "Erro ao inicializar SDL_ttf! ERRO :"<< TTF_GetError() << endl;
-        IMG_Quit();
-        SDL_Quit();
-        return 1;
-    }
     //termino da inicialização
 
     //cria a janela
-    string titulo = "Game";
-    Screen display(titulo.c_str(),WINDOW_WIDTH,WINDOW_HEIGHT); 
+    Screen display("Plataforma",WINDOW_WIDTH,WINDOW_HEIGHT); 
     display.getErrors();
     //termino da criação da janela
     
-    
-    //cria uma entidade
-    Entity ghost("assets/ghost.png",&display);
-    ghost.setSize(Vector2d(128,128));
-    Vector2d ghost_pos((WINDOW_WIDTH - ghost.getSize().x)/2  , (WINDOW_HEIGHT - ghost.getSize().y)/2);
-    ghost.setPosition(ghost_pos);
 
-
-
-
-    //criação da fonte
-    TtfFont text = TtfFont("assets/minecraft.ttf", 16, &display);
-    text.setFontColor(0, 0, 0, 255);
-    text.setTextPosition(20,20);
-    text.getErrors();
-    //termino da criação da fonte
-
+    Level level(&display);
 
 
     //escrita e calculo da duração do frame
@@ -70,7 +46,6 @@ int main(int argc,char *argv[])
     bool game_run = true;
    
 
-
     //game loop
     while(game_run){
         
@@ -82,6 +57,7 @@ int main(int argc,char *argv[])
         display.fill(82, 217, 118,255);
         display.clear();
 
+        
 
         //lida com eventos
         while(SDL_PollEvent(&events))
@@ -92,19 +68,11 @@ int main(int argc,char *argv[])
             }
         }
 
-        //renderiza o fantasma na tela
-        //display.render(texture,nullptr,&dst_rect);
-        ghost.render();
+        level.run();     
 
-        //escrita do fps na tela
-        text.renderText(fps_s);
-        //fim escrita da fonte do fps
-
+        
         //atualiza o renderer
         display.update();
-
-        //limpeza da textura da fonte   
-        text.clear();
 
         //calculo do tempo do frame
         dt = SDL_GetTicks() - dt;
@@ -112,7 +80,7 @@ int main(int argc,char *argv[])
             SDL_Delay((1000/FPS) - dt);
         }
         
-        //calculo para a escrita do fps na tela
+        //calculo para a escrita do fps
         dt2 = SDL_GetTicks() - dt2;
         int fps = 1000/dt2;
         
@@ -122,17 +90,16 @@ int main(int argc,char *argv[])
             fps_counter = 0;
             fps_s = "FPS  ";
             fps_s += to_string(fps);
+            cout << fps_s << endl;
         }
         
     }
 
     //libera a memória alocada pelos objetos
-    ghost.close();
-    text.close();
+    level.clear();
     display.destroy();
     
     //encerra as apis
-    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
     return 0;
